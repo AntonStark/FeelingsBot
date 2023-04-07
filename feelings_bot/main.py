@@ -5,10 +5,15 @@ based on article
 
 from datetime import datetime
 
+import backoff
+import requests
 import telebot
 import gspread
 
+from telebot.types import Message
+
 from feelings_bot.config import settings
+from feelings_bot.utils import chats
 
 bot = telebot.TeleBot(settings.TELEGRAM_API_KEY)
 gc = gspread.service_account(
@@ -17,8 +22,15 @@ gc = gspread.service_account(
 sh = gc.open_by_key(settings.SPREADSHEET_ID)
 
 
-@bot.message_handler(commands=['start', 'help'])
-def send_welcome(message):
+@bot.message_handler(commands=['start'])
+def init(message: Message):
+    chat_id = message.chat.id
+    bot.send_message(chat_id, "Привет! Я буду спрашивать тебя об эмоциях в случайное время дня🙂")
+    chats.add_chat(chat_id)
+
+
+@bot.message_handler(commands=['help'])
+def handle_help(message):
     bot.reply_to(message, "Привет! Я буду спрашивать тебя об эмоциях в случайное время дня🙂")
 
 
@@ -34,5 +46,14 @@ def handle_text_message(message):
     bot.send_message(message.chat.id, f'Записал: {emotion}')
 
 
-if __name__ == '__main__':
+@backoff.on_exception(
+    backoff.expo,
+    requests.exceptions.RequestException,
+    max_tries=8,
+)
+def run():
     bot.polling(none_stop=True)
+
+
+if __name__ == '__main__':
+    run()
