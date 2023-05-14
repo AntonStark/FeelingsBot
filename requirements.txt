@@ -3,4 +3,5 @@ backoff
 gspread
 pytz
 pyTelegramBotAPI
+supervisor
 requests

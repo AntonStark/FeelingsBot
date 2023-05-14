@@ -67,6 +67,7 @@ def handle_text_message(message):
     max_tries=8,
 )
 def run_bot():
+    print('Starting...')
     bot.polling(none_stop=True)
 
 
