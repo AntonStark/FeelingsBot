@@ -1,3 +1,10 @@
 Start on server:
     from ~/FeelingsBot/feelings_bot run:
     PYTHONPATH=..:$PYTHONPATH python main.py &
+
+UPD1:
+start:
+    from ~/FeelingsBot/
+    supervisord -c supervisord.conf
+control:
+    supervisorctl status
