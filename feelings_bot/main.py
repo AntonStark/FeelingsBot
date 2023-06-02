@@ -55,7 +55,7 @@ def handle_text_message(message):
 
     now = datetime.now(tz=pytz.timezone('Europe/Moscow'))
     date_ = now.strftime('%d.%m.%Y')
-    time_ = datetime.now().strftime('%H:%M')
+    time_ = now.strftime('%H:%M')
     emotion = message.text
 
     sh.sheet1.append_row([date_, time_, emotion])
