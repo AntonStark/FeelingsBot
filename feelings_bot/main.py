@@ -5,6 +5,7 @@ based on article
 from datetime import datetime
 
 import backoff
+import pytz
 import requests
 import telebot  # noqa
 import gspread
@@ -52,7 +53,8 @@ def handle_text_message(message):
     chat_id = message.chat.id
     print(f'Run handle_text_message on chat {chat_id}')
 
-    date_ = datetime.now().strftime('%d.%m.%Y')
+    now = datetime.now(tz=pytz.timezone('Europe/Moscow'))
+    date_ = now.strftime('%d.%m.%Y')
     time_ = datetime.now().strftime('%H:%M')
     emotion = message.text
 
