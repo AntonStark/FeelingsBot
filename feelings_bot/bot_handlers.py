@@ -1,13 +1,15 @@
 from datetime import datetime
 
+import gspread
 import pytz
 import telebot
 from telebot.types import Message
 
 from feelings_bot.config import settings
-from feelings_bot.main import sh
 from feelings_bot.utils import chats
 
+gc = gspread.service_account('config/gspread/service_account.json')
+sh = gc.open_by_key(settings.SPREADSHEET_ID)
 bot = telebot.TeleBot(settings.TELEGRAM_API_KEY)
 
 

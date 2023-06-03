@@ -4,7 +4,6 @@ based on article
 """
 
 import backoff
-import gspread
 import pytz
 import requests
 import telebot  # noqa
@@ -17,9 +16,6 @@ from feelings_bot.bot_handlers import (
 )
 from feelings_bot.config import settings
 from feelings_bot.utils.times import random_date_today
-
-gc = gspread.service_account('config/gspread/service_account.json')
-sh = gc.open_by_key(settings.SPREADSHEET_ID)
 
 scheduler = BackgroundScheduler(timezone=pytz.utc)
 
