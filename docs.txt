@@ -8,3 +8,4 @@ start:
     supervisord -c supervisord.conf
 control:
     supervisorctl status
+    supervisorctl restart all
