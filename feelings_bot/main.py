@@ -15,14 +15,18 @@ from feelings_bot.bot_handlers import (
     send_questions,
 )
 from feelings_bot.config import settings
-from feelings_bot.utils.times import random_date_today
+from feelings_bot.utils.times import random_datetime_today
 
 scheduler = BackgroundScheduler(timezone=pytz.utc)
 
 
 @scheduler.scheduled_job(trigger='cron', hour=settings.PLAN_TIME.hour, minute=settings.PLAN_TIME.minute)
 def plan_send_question():
-    scheduler.add_job(send_questions, trigger='date', run_date=random_date_today())
+    scheduler.add_job(
+        send_questions,
+        trigger='date',
+        run_date=random_datetime_today(hour_min=15, hour_max=19),
+    )
 
 
 @backoff.on_exception(
