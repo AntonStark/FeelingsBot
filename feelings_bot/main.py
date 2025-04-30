@@ -2,11 +2,13 @@
 based on article
  https://muxtarovich.medium.com/делаем-бота-для-учета-личных-расходов-на-python-используя-google-spreadsheets-часть-2-ee17e859e1
 """
+import http.client
 
 import backoff
 import pytz
 import requests
 import telebot  # noqa
+import urllib3
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -31,7 +33,7 @@ def plan_send_question():
 
 @backoff.on_exception(
     backoff.expo,
-    requests.exceptions.RequestException,
+    (requests.exceptions.RequestException, http.client.RemoteDisconnected, urllib3.exceptions.ProtocolError),
     max_tries=8,
 )
 def run_bot():
